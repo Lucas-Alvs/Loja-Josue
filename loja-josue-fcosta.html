@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loja Josué F. Da Costa – Peixe Fresco e Ovos de Granja</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0a1628;
+    --deep: #081120;
+    --ocean: #0d3b6e;
+    --wave: #1565c0;
+    --sky: #1e88e5;
+    --foam: #e3f2fd;
+    --ice: #f0f8ff;
+    --gold: #f9a825;
+    --lime: #aed66c;
+    --white: #ffffff;
+    --gray: #b0bec5;
+    --red: #ef5350;
+    --text: #eceff1;
+    --muted: #90a4ae;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--deep);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ─── WATER EFFECT OVERLAY ─── */
+  .water-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(21,101,192,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(13,59,110,0.2) 0%, transparent 50%);
+  }
+
+  /* ─── NAVIGATION ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(8, 17, 32, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(21,101,192,0.3);
+    padding: 0 2rem;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .logo-fish {
+    width: 48px;
+    height: 32px;
+  }
+
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--white);
+    line-height: 1.1;
+  }
+
+  .nav-brand span {
+    display: block;
+    font-size: 0.65rem;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cart {
+    background: var(--wave);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 24px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+  }
+
+  .nav-cart:hover { background: var(--sky); }
+
+  .cart-badge {
+    background: var(--gold);
+    color: var(--navy);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--gray);
+    transition: 0.3s;
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 90px 2rem 4rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, #081120 0%, #0a1e3d 50%, #0d3b6e 100%);
+    z-index: 0;
+  }
+
+  .hero-ripples {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(30,136,229,0.15);
+    animation: ripple-out 8s ease-out infinite;
+  }
+
+  .ripple:nth-child(1) { width: 300px; height: 300px; top: 60%; left: 70%; animation-delay: 0s; }
+  .ripple:nth-child(2) { width: 500px; height: 500px; top: 55%; left: 65%; animation-delay: 2s; }
+  .ripple:nth-child(3) { width: 700px; height: 700px; top: 50%; left: 60%; animation-delay: 4s; }
+  .ripple:nth-child(4) { width: 200px; height: 200px; top: 20%; left: 10%; animation-delay: 1s; }
+  .ripple:nth-child(5) { width: 400px; height: 400px; top: 15%; left: 5%; animation-delay: 3s; }
+
+  @keyframes ripple-out {
+    0% { transform: scale(0.5); opacity: 0.4; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 680px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(249,168,37,0.15);
+    border: 1px solid rgba(249,168,37,0.4);
+    color: var(--gold);
+    padding: 6px 16px;
+    border-radius: 24px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 1.2rem;
+  }
+
+  .hero-title em {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    padding: 14px 32px;
+    border-radius: 32px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(249,168,37,0.35);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    padding: 14px 32px;
+    border-radius: 32px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: border-color 0.2s, background 0.2s;
+    display: inline-block;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--white);
+    background: rgba(255,255,255,0.06);
+  }
+
+  .hero-stats {
+    position: absolute;
+    right: 2rem;
+    bottom: 4rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stat-card {
+    background: rgba(13,59,110,0.5);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(30,136,229,0.25);
+    border-radius: 16px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 120px;
+  }
+
+  .stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  .hero-fish-illustration {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    opacity: 0.08;
+    width: 600px;
+  }
+
+  /* ─── WAVE DIVIDER ─── */
+  .wave-divider {
+    width: 100%;
+    line-height: 0;
+    margin-top: -1px;
+  }
+
+  /* ─── SECTION COMMONS ─── */
+  section { position: relative; z-index: 1; }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--white);
+    line-height: 1.2;
+  }
+
+  .section-sub {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-top: 0.75rem;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ─── PROMOÇÃO ─── */
+  #promocao {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, #0d3b6e, #0a2d58);
+    border-top: 1px solid rgba(30,136,229,0.2);
+    border-bottom: 1px solid rgba(30,136,229,0.2);
+  }
+
+  .promo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .promo-card {
+    background: rgba(8,17,32,0.5);
+    border: 1px solid rgba(249,168,37,0.3);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .promo-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+  }
+
+  .promo-icon {
+    font-size: 2.2rem;
+    flex-shrink: 0;
+  }
+
+  .promo-info strong {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .promo-info p {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* ─── PRODUTOS ─── */
+  #produtos {
+    padding: 6rem 0;
+    background: var(--deep);
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .filter-tab {
+    background: transparent;
+    border: 1px solid rgba(144,164,174,0.3);
+    color: var(--muted);
+    padding: 8px 20px;
+    border-radius: 24px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-tab.active,
+  .filter-tab:hover {
+    background: var(--wave);
+    border-color: var(--wave);
+    color: white;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .product-card {
+    background: linear-gradient(145deg, rgba(13,59,110,0.3), rgba(8,17,32,0.8));
+    border: 1px solid rgba(30,136,229,0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    position: relative;
+  }
+
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    border-color: rgba(30,136,229,0.5);
+  }
+
+  .product-img {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    background: linear-gradient(135deg, rgba(13,59,110,0.6), rgba(21,101,192,0.3));
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(8,17,32,0.6));
+  }
+
+  .product-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+
+  .product-body {
+    padding: 1.5rem;
+  }
+
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+  }
+
+  .product-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+  }
+
+  .product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .product-price {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .price-label {
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .price-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .price-unit {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+  }
+
+  .btn-add {
+    background: var(--wave);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-add:hover {
+    background: var(--sky);
+    transform: scale(1.04);
+  }
+
+  .btn-add:active { transform: scale(0.96); }
+
+  /* ─── RECEITAS ─── */
+  #receitas {
+    padding: 6rem 0;
+    background: linear-gradient(180deg, var(--deep), #0a1e3d);
+  }
+
+  .receitas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .receita-card {
+    background: rgba(13,59,110,0.25);
+    border: 1px solid rgba(30,136,229,0.2);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .receita-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(249,168,37,0.4);
+  }
+
+  .receita-img {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    background: linear-gradient(135deg, rgba(13,59,110,0.7), rgba(30,136,229,0.2));
+  }
+
+  .receita-body { padding: 1.25rem; }
+
+  .receita-cat {
+    font-size: 0.68rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .receita-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .receita-info {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* ─── SOBRE NÓS ─── */
+  #sobre {
+    padding: 6rem 0;
+    background: var(--deep);
+  }
+
+  .sobre-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .sobre-visual {
+    position: relative;
+  }
+
+  .sobre-badge-img {
+    width: 100%;
+    max-width: 420px;
+    height: 420px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #0d3b6e, #0a1628);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8rem;
+    border: 1px solid rgba(30,136,229,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sobre-badge-img::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(21,101,192,0.3), transparent 60%);
+  }
+
+  .sobre-seal {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 120px;
+    height: 120px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid var(--deep);
+  }
+
+  .sobre-seal strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+  }
+
+  .sobre-seal span {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .sobre-text p {
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .sobre-values {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .sobre-value {
+    background: rgba(13,59,110,0.3);
+    border: 1px solid rgba(30,136,229,0.2);
+    border-radius: 12px;
+    padding: 1rem;
+  }
+
+  .sobre-value-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+
+  .sobre-value strong {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--gold);
+    margin-bottom: 2px;
+  }
+
+  .sobre-value p {
+    font-size: 0.78rem !important;
+    margin: 0 !important;
+  }
+
+  /* ─── CONTATO ─── */
+  #contato {
+    padding: 6rem 0;
+    background: linear-gradient(180deg, #0a1e3d, var(--deep));
+  }
+
+  .contato-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+
+  .contato-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  .contato-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .contato-icon {
+    width: 44px;
+    height: 44px;
+    background: rgba(21,101,192,0.2);
+    border: 1px solid rgba(30,136,229,0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .contato-item strong {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+
+  .contato-item a, .contato-item p {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .contato-item a:hover { color: var(--white); }
+
+  .map-placeholder {
+    background: rgba(13,59,110,0.3);
+    border: 1px solid rgba(30,136,229,0.2);
+    border-radius: 16px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    font-size: 2rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .map-placeholder:hover { border-color: rgba(249,168,37,0.4); }
+  .map-placeholder p { font-size: 0.82rem; color: var(--muted); }
+
+  .form-group { margin-bottom: 1.25rem; }
+
+  .form-group label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    background: rgba(13,59,110,0.3);
+    border: 1px solid rgba(30,136,229,0.25);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--white);
+    font-size: 0.9rem;
+    font-family: 'Barlow', sans-serif;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--sky);
+  }
+
+  .form-group textarea { height: 120px; resize: vertical; }
+
+  .form-group select option { background: var(--navy); }
+
+  .btn-submit {
+    width: 100%;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    padding: 14px;
+    border-radius: 32px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+
+  .btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--deep);
+    border-top: 1px solid rgba(30,136,229,0.15);
+    padding: 3rem 0 1.5rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-brand .nav-brand {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .footer-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .social-link {
+    width: 38px;
+    height: 38px;
+    background: rgba(21,101,192,0.2);
+    border: 1px solid rgba(30,136,229,0.25);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .social-link:hover { background: rgba(21,101,192,0.4); }
+
+  .footer-col h4 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-col a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: var(--white); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(144,164,174,0.1);
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-bottom p { font-size: 0.78rem; color: var(--muted); }
+
+  /* ─── CART DRAWER ─── */
+  .cart-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .cart-overlay.open { opacity: 1; pointer-events: all; }
+
+  .cart-drawer {
+    position: fixed;
+    right: 0; top: 0; bottom: 0;
+    width: 380px;
+    max-width: 100vw;
+    background: var(--navy);
+    border-left: 1px solid rgba(30,136,229,0.3);
+    z-index: 2001;
+    padding: 2rem;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart-drawer.open { transform: translateX(0); }
+
+  .cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .cart-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--white);
+  }
+
+  .close-cart {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .cart-items { flex: 1; overflow-y: auto; }
+
+  .cart-empty {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .cart-empty .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+  .cart-item {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(144,164,174,0.1);
+  }
+
+  .cart-item-icon {
+    width: 48px; height: 48px;
+    background: rgba(13,59,110,0.5);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .cart-item-info { flex: 1; }
+
+  .cart-item-name {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--white);
+  }
+
+  .cart-item-price {
+    font-size: 0.82rem;
+    color: var(--gold);
+    margin-top: 2px;
+  }
+
+  .cart-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .qty-btn {
+    width: 24px; height: 24px;
+    background: rgba(21,101,192,0.3);
+    border: 1px solid rgba(30,136,229,0.3);
+    border-radius: 6px;
+    color: var(--white);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qty-num {
+    font-size: 0.88rem;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  .cart-footer { padding-top: 1.5rem; }
+
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.5rem;
+  }
+
+  .cart-total span { font-size: 0.85rem; color: var(--muted); }
+
+  .cart-total strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .btn-checkout {
+    width: 100%;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    padding: 14px;
+    border-radius: 32px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .btn-checkout:hover { opacity: 0.88; }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--ocean);
+    border: 1px solid rgba(30,136,229,0.4);
+    color: var(--white);
+    padding: 12px 24px;
+    border-radius: 32px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    z-index: 3000;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .sobre-grid, .contato-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .hero-stats {
+      position: static;
+      flex-direction: row;
+      margin-top: 2.5rem;
+    }
+
+    .stat-card { min-width: 90px; padding: 12px; }
+  }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+
+    .nav-links.mobile-open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 70px; left: 0; right: 0;
+      background: rgba(8,17,32,0.97);
+      padding: 2rem;
+      gap: 1.5rem;
+      border-bottom: 1px solid rgba(30,136,229,0.2);
+    }
+
+    .hero-stats {
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .sobre-badge-img { height: 280px; font-size: 5rem; }
+    .sobre-values { grid-template-columns: 1fr; }
+
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+    #hero { padding-top: 80px; }
+  }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .wave-animate {
+    animation: wave-bob 4s ease-in-out infinite;
+  }
+
+  @keyframes wave-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="water-bg"></div>
+
+<!-- ─── CART OVERLAY ─── -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h2>Seu Carrinho</h2>
+    <button class="close-cart" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="empty-icon">🐟</div>
+      <p>Seu carrinho está vazio</p>
+    </div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Total</span>
+      <strong id="cartTotal">R$ 0,00</strong>
+    </div>
+    <button class="btn-checkout" onclick="checkout()">Finalizar Pedido →</button>
+  </div>
+</div>
+
+<!-- ─── TOAST ─── -->
+<div class="toast" id="toast"></div>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="#hero" class="nav-logo">
+    <svg class="logo-fish" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M70 25 C55 5 30 2 10 15 C6 17 2 20 2 25 C2 30 6 33 10 35 C30 48 55 45 70 25Z" fill="#1565c0"/>
+      <path d="M70 25 L80 15 L75 25 L80 35 Z" fill="#f9a825"/>
+      <circle cx="15" cy="22" r="3" fill="white"/>
+      <circle cx="15" cy="22" r="1.5" fill="#0a1628"/>
+      <path d="M30 18 C35 16 40 16 45 18" stroke="#4fc3f7" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+      <path d="M30 25 C35 23 40 23 45 25" stroke="#4fc3f7" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.4"/>
+      <text x="52" y="30" font-family="Playfair Display, serif" font-size="14" font-weight="900" fill="#f9a825">JF</text>
+    </svg>
+    <div class="nav-brand">
+      Josué F. Da Costa
+      <span>Peixaria & Ovos de Granja</span>
+    </div>
+  </a>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#produtos">Produtos</a></li>
+    <li><a href="#promocao">Promoções</a></li>
+    <li><a href="#receitas">Receitas</a></li>
+    <li><a href="#sobre">Sobre Nós</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <button class="nav-cart" onclick="openCart()">
+      🛒 Carrinho
+      <span class="cart-badge" id="cartCount">0</span>
+    </button>
+    <button class="hamburger" id="hamburger" onclick="toggleMobile()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ripples">
+    <div class="ripple"></div>
+    <div class="ripple"></div>
+    <div class="ripple"></div>
+    <div class="ripple"></div>
+    <div class="ripple"></div>
+  </div>
+
+  <!-- Big fish silhouette background -->
+  <svg class="hero-fish-illustration" viewBox="0 0 400 250" fill="none">
+    <path d="M360 125 C270 20 140 10 40 65 C20 75 5 95 5 125 C5 155 20 175 40 185 C140 240 270 230 360 125Z" fill="white"/>
+    <path d="M360 125 L400 80 L380 125 L400 170 Z" fill="white"/>
+  </svg>
+
+  <div class="container" style="position:relative;z-index:2;width:100%;">
+    <div class="hero-content">
+      <div class="hero-badge">
+        🐟 Frescor direto do mar para sua mesa
+      </div>
+      <h1 class="hero-title">
+        Peixe <em>Fresco</em><br>& Ovos de<br><em>Granja</em>
+      </h1>
+      <p class="hero-sub">
+        Há décadas levando o melhor da pesca e da criação diretamente para a sua família. Qualidade, frescor e tradição em cada pedaço.
+      </p>
+      <div class="hero-actions">
+        <a href="#produtos" class="btn-primary">Comprar Agora →</a>
+        <a href="#sobre" class="btn-outline">Conheça a Loja</a>
+      </div>
+
+      <div class="hero-stats" style="position:static;flex-direction:row;margin-top:3rem;display:flex;gap:1rem;flex-wrap:wrap;">
+        <div class="stat-card">
+          <div class="stat-num">+20</div>
+          <div class="stat-label">Anos de tradição</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Produto fresco</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">6×</div>
+          <div class="stat-label">Dias por semana</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ONDA ─── -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;display:block;">
+    <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,20 1440,30 L1440,60 L0,60 Z" fill="#0d3b6e"/>
+  </svg>
+</div>
+
+<!-- ─── PROMOÇÃO ─── -->
+<section id="promocao">
+  <div class="container">
+    <div class="promo-grid">
+      <div class="promo-card reveal">
+        <div class="promo-icon">🚚</div>
+        <div class="promo-info">
+          <strong>Entrega Rápida</strong>
+          <p>Peça antes das 10h e receba no mesmo dia em Americana e região</p>
+        </div>
+      </div>
+      <div class="promo-card reveal">
+        <div class="promo-icon">⭐</div>
+        <div class="promo-info">
+          <strong>Promoção da Semana</strong>
+          <p>Filé de tilápia com 20% de desconto na compra acima de 2kg</p>
+        </div>
+      </div>
+      <div class="promo-card reveal">
+        <div class="promo-icon">🥚</div>
+        <div class="promo-info">
+          <strong>Combo Especial</strong>
+          <p>2kg de peixe + 1 dúzia de ovos de granja com preço especial</p>
+        </div>
+      </div>
+      <div class="promo-card reveal">
+        <div class="promo-icon">💳</div>
+        <div class="promo-info">
+          <strong>Pix tem Desconto</strong>
+          <p>Pagamento via Pix com 5% de desconto em qualquer pedido</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ONDA ─── -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;display:block;transform:scaleY(-1);">
+    <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,20 1440,30 L1440,60 L0,60 Z" fill="#0d3b6e"/>
+  </svg>
+</div>
+
+<!-- ─── PRODUTOS ─── -->
+<section id="produtos">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">🐠 Nossos Produtos</div>
+      <h2 class="section-title">Seleção do Dia</h2>
+      <p class="section-sub">Peixes selecionados diariamente e ovos colhidos frescos da granja</p>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterProducts('todos', this)">Todos</button>
+      <button class="filter-tab" onclick="filterProducts('peixe', this)">Peixes</button>
+      <button class="filter-tab" onclick="filterProducts('file', this)">Filés</button>
+      <button class="filter-tab" onclick="filterProducts('posta', this)">Postas</button>
+      <button class="filter-tab" onclick="filterProducts('ovos', this)">Ovos</button>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+
+      <div class="product-card reveal" data-cat="file peixe">
+        <div class="product-img">🐟<span class="product-tag">Mais vendido</span></div>
+        <div class="product-body">
+          <h3 class="product-name">Filé de Tilápia</h3>
+          <p class="product-desc">Filé fresco de tilápia sem espinha, ideal para fritar, grelhar ou fazer ao molho. Textura macia e sabor suave.</p>
+          <div class="product-footer">
+            <div class="product-price">
+              <span class="price-label">Preço por kg</span>
+              <span class="price-value">R$ 24,90</span>
+              <span class="price-unit">mínimo 500g</span>
+            </div>
+            <button class="btn-add" onclick="addToCart('Filé de Tilápia', 24.90, '🐟')">+ Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-cat="file peixe">
+        <div class="product-img">🐠</div>
+        <div class="product-body">
+          <h3 class="product-name">Filé de Merluza</h3>
+          <p class="product-desc">Merluza sem pele e sem espinha, de sabor delicado. Perfeita para pratos sofisticados ou receitas simples do dia a dia.</p>
+          <div class="product-footer">
+            <div class="product-price">
+              <span class="price-label">Preço por kg</span>
+              <span class="price-value">R$ 34,90</span>
+              <span class="price-unit">mínimo 500g</span>
+            </div>
+            <button class="btn-add" onclick="addToCart('Filé de Merluza', 34.90, '🐠')">+ Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-cat="file peixe">
+        <div class="product-img">🎣</div>
+        <div class="product-body">
+          <h3 class="product-name">Filé de Pescada</h3>
+          <p class="product-desc">Pescada branca fresca, filé limpo e saboroso. Excelente para receitas de forno, frigideira ou caldos.</p>
+          <div class="product-footer">
+            <div class="product-price">
+              <span class="price-label">Preço por kg</span>
+              <span class="price-value">R$ 28,50</span>
+              <span class="price-unit">mínimo 500g</span>
+            </div>
+            <button class="btn-add" onclick="addToCart('Filé de Pescada', 28.50, '🎣')">+ Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-cat="posta peixe">
+        <div class="product-img">🐡<span class="product-tag">Promoção</span></div>
+        <div class="product-body">
+          <h3 class="product-name">Posta de Cação</h3>
+          <p class="product-desc">Posta firme de cação, perfeita para grelhar com limão e alho. Carne saborosa e de fácil preparo para toda a família.</p>
+          <div class="product-footer">
+            <div class="product-price">
+              <span class="price-label">Preço por kg</span>
+              <span class="price-value">R$ 19,90</span>
+              <span class="price-unit">mínimo 1kg</span>
+            </div>
+            <button class="btn-add" onclick="addToCart('Posta de Cação', 19.90, '🐡')">+ Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-cat="posta peixe">
+        <div class="product-img">🐟</div>
+        <div class="product-body">
+          <h3 class="product-name">Posta de Pintado</h3>
+          <p class="product-desc">O rei dos rios! Posta de pintado fresca, com sabor inconfundível. Ideal para caldeirada, moqueca ou simplesmente grelhada.</p>
+          <div class="product-footer">
+            <div class="product-price">
+              <span class="price-label">Preço por kg</span>
+              <span class="price-value">R$ 42,00</span>
+              <span class="price-unit">mínimo 500g</span>
+            </div>
+            <button class="btn-add" onclick="addToCart('Posta de Pintado', 42.00, '🐟')">+ Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-cat="posta peixe">
+        <div class="product-img">🐠</div>
+        <div class="product-body">
+          <h3 class="product-name">Posta de Salmão</h3>
+          <p class="product-desc">Salmão fresco em posta generosa. Rico em ômega-3, saboroso e versátil. Ideal para grelhar, assar ou preparar cru em tartar.</p>
+          <div class="product-footer">
+            <div class="product-price">
+              <span class="price-label">Preço por kg</span>
+              <span class="price-value">R$ 68,90</span>
+              <span class="price-unit">mínimo 300g</span>
+            </div>
+            <button class="btn-add" onclick="addToCart('Posta de Salmão', 68.90, '🐠')">+ Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-cat="ovos">
+        <div class="product-img">🥚<span class="product-tag">Novidade</span></div>
+        <div class="product-body">
+          <h3 class="product-name">Ovos de Granja — Dúzia</h3>
+          <p class="product-desc">Ovos frescos de galinhas criadas em granja local. Gemas amarelas intensas, cascas resistentes. Colhidos diariamente.</p>
+          <div class="product-footer">
+            <div class="product-price">
+              <span class="price-label">Por dúzia</span>
+              <span class="price-value">R$ 11,90</span>
+              <span class="price-unit">unidade</span>
+            </div>
+            <button class="btn-add" onclick="addToCart('Ovos de Granja (dz)', 11.90, '🥚')">+ Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-cat="ovos">
+        <div class="product-img">🥚</div>
+        <div class="product-body">
+          <h3 class="product-name">Ovos de Granja — 30 und.</h3>
+          <p class="product-desc">Bandeja com 30 ovos de granja frescos. Econômico e prático para famílias maiores. Entregamos sem quebrar, garantido.</p>
+          <div class="product-footer">
+            <div class="product-price">
+              <span class="price-label">Por bandeja</span>
+              <span class="price-value">R$ 27,90</span>
+              <span class="price-unit">30 unidades</span>
+            </div>
+            <button class="btn-add" onclick="addToCart('Ovos de Granja (30un)', 27.90, '🥚')">+ Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-cat="file peixe">
+        <div class="product-img">🐡</div>
+        <div class="product-body">
+          <h3 class="product-name">Filé de Bacalhau</h3>
+          <p class="product-desc">Bacalhau dessalgado e limpo, em postas generosas. Para as receitas mais tradicionais da culinária portuguesa e brasileira.</p>
+          <div class="product-footer">
+            <div class="product-price">
+              <span class="price-label">Preço por kg</span>
+              <span class="price-value">R$ 89,90</span>
+              <span class="price-unit">mínimo 500g</span>
+            </div>
+            <button class="btn-add" onclick="addToCart('Filé de Bacalhau', 89.90, '🐡')">+ Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── RECEITAS ─── -->
+<section id="receitas">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">👨‍🍳 Da Nossa Cozinha</div>
+      <h2 class="section-title">Receitas Especiais</h2>
+      <p class="section-sub">Inspirações para preparar nossos produtos com sabor de chef</p>
+    </div>
+
+    <div class="receitas-grid">
+      <div class="receita-card reveal">
+        <div class="receita-img">🍋</div>
+        <div class="receita-body">
+          <div class="receita-cat">Peixe</div>
+          <div class="receita-title">Filé de Tilápia ao Limão com Alcaparras</div>
+          <div class="receita-info">
+            <span>⏱ 25 min</span>
+            <span>👥 4 pessoas</span>
+            <span>⭐ Fácil</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="receita-card reveal">
+        <div class="receita-img">🥘</div>
+        <div class="receita-body">
+          <div class="receita-cat">Peixe</div>
+          <div class="receita-title">Moqueca de Cação com Leite de Coco</div>
+          <div class="receita-info">
+            <span>⏱ 45 min</span>
+            <span>👥 6 pessoas</span>
+            <span>⭐⭐ Médio</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="receita-card reveal">
+        <div class="receita-img">🍳</div>
+        <div class="receita-body">
+          <div class="receita-cat">Ovos</div>
+          <div class="receita-title">Ovos Mexidos Cremosos com Ervas Frescas</div>
+          <div class="receita-info">
+            <span>⏱ 10 min</span>
+            <span>👥 2 pessoas</span>
+            <span>⭐ Fácil</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="receita-card reveal">
+        <div class="receita-img">🫙</div>
+        <div class="receita-body">
+          <div class="receita-cat">Peixe</div>
+          <div class="receita-title">Caldeirada de Pintado com Legumes</div>
+          <div class="receita-info">
+            <span>⏱ 60 min</span>
+            <span>👥 8 pessoas</span>
+            <span>⭐⭐ Médio</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="receita-card reveal">
+        <div class="receita-img">🥗</div>
+        <div class="receita-body">
+          <div class="receita-cat">Peixe</div>
+          <div class="receita-title">Salada de Bacalhau com Grão-de-Bico</div>
+          <div class="receita-info">
+            <span>⏱ 30 min</span>
+            <span>👥 4 pessoas</span>
+            <span>⭐ Fácil</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="receita-card reveal">
+        <div class="receita-img">🎂</div>
+        <div class="receita-body">
+          <div class="receita-cat">Ovos</div>
+          <div class="receita-title">Omelete de Forno com Queijo e Espinafre</div>
+          <div class="receita-info">
+            <span>⏱ 35 min</span>
+            <span>👥 4 pessoas</span>
+            <span>⭐ Fácil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SOBRE NÓS ─── -->
+<section id="sobre">
+  <div class="container">
+    <div class="sobre-grid">
+      <div class="sobre-visual reveal">
+        <div class="sobre-badge-img">
+          <svg width="240" height="200" viewBox="0 0 240 200" fill="none" style="position:relative;z-index:1;">
+            <path d="M200 100 C150 20 80 15 30 55 C15 65 5 80 5 100 C5 120 15 135 30 145 C80 185 150 180 200 100Z" fill="rgba(21,101,192,0.5)" stroke="rgba(30,136,229,0.6)" stroke-width="1.5"/>
+            <path d="M200 100 L230 75 L215 100 L230 125 Z" fill="rgba(249,168,37,0.8)"/>
+            <circle cx="45" cy="88" r="8" fill="rgba(255,255,255,0.8)"/>
+            <circle cx="45" cy="88" r="4" fill="#0a1628"/>
+            <path d="M80 70 C100 62 120 62 140 70" stroke="#4fc3f7" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <path d="M80 85 C100 77 120 77 140 85" stroke="#4fc3f7" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+            <path d="M80 100 C100 92 120 92 140 100" stroke="#4fc3f7" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.3"/>
+            <text x="108" y="145" font-family="Playfair Display, serif" font-size="36" font-weight="900" fill="#f9a825" text-anchor="middle">JF</text>
+          </svg>
+          <div class="sobre-seal">
+            <strong>+20</strong>
+            <span>anos de<br>tradição</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sobre-text reveal">
+        <div class="section-tag">🏪 Nossa História</div>
+        <h2 class="section-title" style="text-align:left;margin-bottom:1.5rem;">A tradição da<br>Família Costa</h2>
+        <p>A Loja Josué F. Da Costa nasceu do amor de uma família pelo mar e pela boa alimentação. Há mais de duas décadas, Josué iniciou sua jornada como pescador e vendedor, trazendo para as mesas de Americana o que havia de mais fresco e saboroso.</p>
+        <p>Com o tempo, a loja cresceu, mas os valores permaneceram os mesmos: qualidade acima de tudo, atendimento honesto e preço justo. Hoje, além dos peixes frescos, também oferecemos ovos de granja selecionados, diretamente do produtor.</p>
+        <p>Cada produto que passa por nossas mãos é cuidadosamente escolhido para garantir que você e sua família tenham o melhor na mesa, com a confiança de quem conhece o produto de verdade.</p>
+
+        <div class="sobre-values">
+          <div class="sobre-value">
+            <div class="sobre-value-icon">❄️</div>
+            <strong>Frescor garantido</strong>
+            <p>Produtos recebidos diariamente e armazenados com rigor</p>
+          </div>
+          <div class="sobre-value">
+            <div class="sobre-value-icon">🤝</div>
+            <strong>Atendimento honesto</strong>
+            <p>Relação transparente com clientes e fornecedores</p>
+          </div>
+          <div class="sobre-value">
+            <div class="sobre-value-icon">🌿</div>
+            <strong>Origem selecionada</strong>
+            <p>Parceiros locais e fornecedores confiáveis há anos</p>
+          </div>
+          <div class="sobre-value">
+            <div class="sobre-value-icon">💰</div>
+            <strong>Preço justo</strong>
+            <p>Melhor qualidade sem pesar no seu bolso</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTATO ─── -->
+<section id="contato">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">📍 Fale Conosco</div>
+      <h2 class="section-title">Entre em Contato</h2>
+      <p class="section-sub">Faça seu pedido, tire dúvidas ou venha nos visitar</p>
+    </div>
+
+    <div class="contato-grid">
+      <div class="contato-info reveal">
+        <h3>Informações da Loja</h3>
+
+        <div class="contato-item">
+          <div class="contato-icon">📞</div>
+          <div>
+            <strong>Telefone / WhatsApp</strong>
+            <a href="tel:+5519987428964">(19) 98742-8964</a>
+          </div>
+        </div>
+
+        <div class="contato-item">
+          <div class="contato-icon">⏰</div>
+          <div>
+            <strong>Horário de Funcionamento</strong>
+            <p>Segunda a Sábado: 6h às 18h<br>Domingo: 6h às 12h</p>
+          </div>
+        </div>
+
+        <div class="contato-item">
+          <div class="contato-icon">📍</div>
+          <div>
+            <strong>Endereço</strong>
+            <p>Americana – SP<br>Região central</p>
+          </div>
+        </div>
+
+        <div class="contato-item">
+          <div class="contato-icon">🚚</div>
+          <div>
+            <strong>Entrega</strong>
+            <p>Americana e cidades vizinhas<br>Consulte disponibilidade</p>
+          </div>
+        </div>
+
+        <div class="map-placeholder" onclick="window.open('https://maps.google.com/?q=Americana+SP', '_blank')">
+          🗺️
+          <p>Ver no Google Maps</p>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <form onsubmit="submitForm(event)">
+          <div class="form-group">
+            <label>Seu Nome</label>
+            <input type="text" placeholder="Como podemos te chamar?" required>
+          </div>
+          <div class="form-group">
+            <label>Telefone / WhatsApp</label>
+            <input type="tel" placeholder="(19) 9xxxx-xxxx">
+          </div>
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" placeholder="seu@email.com">
+          </div>
+          <div class="form-group">
+            <label>Assunto</label>
+            <select>
+              <option value="">Selecione...</option>
+              <option>Fazer um pedido</option>
+              <option>Consultar disponibilidade</option>
+              <option>Informações sobre entrega</option>
+              <option>Outros</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Mensagem</label>
+            <textarea placeholder="Escreva seu pedido ou dúvida aqui..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Enviar Mensagem →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#hero" class="nav-logo" style="text-decoration:none;display:flex;gap:12px;align-items:center;margin-bottom:1rem;">
+          <svg width="40" height="26" viewBox="0 0 80 50" fill="none">
+            <path d="M70 25 C55 5 30 2 10 15 C6 17 2 20 2 25 C2 30 6 33 10 35 C30 48 55 45 70 25Z" fill="#1565c0"/>
+            <path d="M70 25 L80 15 L75 25 L80 35 Z" fill="#f9a825"/>
+            <circle cx="15" cy="22" r="3" fill="white"/>
+            <circle cx="15" cy="22" r="1.5" fill="#0a1628"/>
+            <text x="45" y="32" font-family="serif" font-size="14" font-weight="900" fill="#f9a825">JF</text>
+          </svg>
+          <span class="nav-brand" style="font-size:1.1rem;">Josué F. Da Costa<span>Peixaria & Ovos de Granja</span></span>
+        </a>
+        <p class="footer-desc">Tradição, frescor e qualidade há mais de 20 anos. Da água à sua mesa com carinho e compromisso.</p>
+        <div class="social-links">
+          <a href="#" class="social-link" title="WhatsApp">📱</a>
+          <a href="#" class="social-link" title="Instagram">📸</a>
+          <a href="#" class="social-link" title="Facebook">💬</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Produtos</h4>
+        <ul>
+          <li><a href="#produtos">Filés de Peixe</a></li>
+          <li><a href="#produtos">Postas</a></li>
+          <li><a href="#produtos">Ovos de Granja</a></li>
+          <li><a href="#produtos">Promoções</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>A Loja</h4>
+        <ul>
+          <li><a href="#sobre">Sobre Nós</a></li>
+          <li><a href="#receitas">Receitas</a></li>
+          <li><a href="#contato">Contato</a></li>
+          <li><a href="#contato">Entrega</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="tel:+5519987428964">(19) 98742-8964</a></li>
+          <li><a href="#">WhatsApp</a></li>
+          <li><a href="#">Americana – SP</a></li>
+          <li><a href="#">Seg–Sáb: 6h–18h</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Loja Josué F. Da Costa · Todos os direitos reservados</p>
+      <p>Feito com ❤️ em Americana – SP</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ─── CART STATE ───
+  let cart = [];
+
+  function addToCart(name, price, icon) {
+    const existing = cart.find(i => i.name === name);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ name, price, icon, qty: 1 });
+    }
+    updateCartUI();
+    showToast('✓ ' + name + ' adicionado ao carrinho');
+  }
+
+  function removeFromCart(name) {
+    const item = cart.find(i => i.name === name);
+    if (item) {
+      item.qty--;
+      if (item.qty <= 0) cart = cart.filter(i => i.name !== name);
+    }
+    updateCartUI();
+  }
+
+  function updateCartUI() {
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const count = cart.reduce((s, i) => s + i.qty, 0);
+    document.getElementById('cartCount').textContent = count;
+    document.getElementById('cartTotal').textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
+
+    const itemsEl = document.getElementById('cartItems');
+    if (cart.length === 0) {
+      itemsEl.innerHTML = '<div class="cart-empty"><div class="empty-icon">🐟</div><p>Seu carrinho está vazio</p></div>';
+    } else {
+      itemsEl.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-icon">${item.icon}</div>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">R$ ${(item.price * item.qty).toFixed(2).replace('.', ',')}</div>
+          </div>
+          <div class="cart-item-qty">
+            <button class="qty-btn" onclick="removeFromCart('${item.name}')">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="addToCart('${item.name}', ${item.price}, '${item.icon}')">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  function openCart() {
+    document.getElementById('cartOverlay').classList.add('open');
+    document.getElementById('cartDrawer').classList.add('open');
+  }
+
+  function closeCart() {
+    document.getElementById('cartOverlay').classList.remove('open');
+    document.getElementById('cartDrawer').classList.remove('open');
+  }
+
+  function checkout() {
+    if (cart.length === 0) {
+      showToast('Adicione produtos antes de finalizar');
+      return;
+    }
+    const msg = cart.map(i => `${i.qty}x ${i.name} – R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}`).join('%0A');
+    const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
+    const whatsapp = `https://wa.me/5519987428964?text=Olá! Gostaria de fazer um pedido:%0A${msg}%0A%0ATotal: R$ ${total.toFixed(2).replace('.', ',')}`;
+    window.open(whatsapp, '_blank');
+  }
+
+  // ─── TOAST ───
+  let toastTimer;
+  function showToast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+  }
+
+  // ─── FILTER ───
+  function filterProducts(cat, btn) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.product-card').forEach(card => {
+      const cats = card.dataset.cat || '';
+      card.style.display = (cat === 'todos' || cats.includes(cat)) ? '' : 'none';
+    });
+  }
+
+  // ─── MOBILE NAV ───
+  function toggleMobile() {
+    document.getElementById('navLinks').classList.toggle('mobile-open');
+  }
+
+  // ─── FORM ───
+  function submitForm(e) {
+    e.preventDefault();
+    showToast('✓ Mensagem enviada! Entraremos em contato em breve.');
+    e.target.reset();
+  }
+
+  // ─── SCROLL REVEAL ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
